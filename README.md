@@ -17,7 +17,6 @@ Static holiday planner. No server, no database, no dependencies. Just one HTML f
 | Vercel | `npx vercel --prod` |
 | Netlify | Drag and drop `index.html` |
 | Cloudflare Pages | Connect repo |
-| S3 + CloudFront | Upload `index.html` |
 
 All give you a free HTTPS URL with zero cost.
 

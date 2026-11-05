@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Holap 🌴 — Holiday Planner</title>
   <meta name="description" content="Plan your perfect holiday. Find the cheapest hotels, activities, and transport." />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌴</text></svg>" />
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -113,22 +114,22 @@ const DB = {
     { id:'h13', name:'Eixample Deluxe', city:'Barcelona', country:'Spain', rating:4.5, price:110, amenities:['wifi','pool','breakfast'], emoji:'✨' },
   ],
   activities: [
-    { id:'a1', name:'Temple Tour', city:'Bali', category:'culture', price:25, duration:'4h', rating:4.6, emoji:'🛕' },
-    { id:'a2', name:'Surf Lesson', city:'Bali', category:'adventure', price:30, duration:'2h', rating:4.8, emoji:'🏄' },
-    { id:'a3', name:'Rice Terrace Trek', city:'Bali', category:'nature', price:15, duration:'3h', rating:4.7, emoji:'🌾' },
-    { id:'a4', name:'Street Food Tour', city:'Bangkok', category:'food', price:18, duration:'3h', rating:4.7, emoji:'🍜' },
-    { id:'a5', name:'Temple & Canal Tour', city:'Bangkok', category:'culture', price:22, duration:'5h', rating:4.5, emoji:'🛶' },
-    { id:'a6', name:'Muay Thai Class', city:'Bangkok', category:'adventure', price:20, duration:'1.5h', rating:4.6, emoji:'🥊' },
-    { id:'a7', name:'Louvre Skip-the-Line', city:'Paris', category:'culture', price:22, duration:'3h', rating:4.9, emoji:'🎨' },
-    { id:'a8', name:'Seine River Cruise', city:'Paris', category:'sightseeing', price:15, duration:'1.5h', rating:4.6, emoji:'🚢' },
-    { id:'a9', name:'Montmartre Walking Tour', city:'Paris', category:'culture', price:0, duration:'2h', rating:4.5, emoji:'🎭' },
-    { id:'a10', name:'Shinto Shrine Tour', city:'Tokyo', category:'culture', price:0, duration:'3h', rating:4.7, emoji:'⛩️' },
-    { id:'a11', name:'Tsukiji Food Walk', city:'Tokyo', category:'food', price:45, duration:'3h', rating:4.8, emoji:'🍣' },
-    { id:'a12', name:'Basilica & Grand Bazaar', city:'Istanbul', category:'culture', price:0, duration:'4h', rating:4.6, emoji:'🕌' },
-    { id:'a13', name:'Bosphorus Cruise', city:'Istanbul', category:'sightseeing', price:12, duration:'2h', rating:4.5, emoji:'🚤' },
-    { id:'a14', name:'Sagrada Familia Entry', city:'Barcelona', category:'culture', price:26, duration:'1.5h', rating:4.9, emoji:'⛪' },
-    { id:'a15', name:'Gothic Quarter Tour', city:'Barcelona', category:'culture', price:0, duration:'2h', rating:4.4, emoji:'🏛️' },
-    { id:'a16', name:'La Boqueria Food Tour', city:'Barcelona', category:'food', price:35, duration:'3h', rating:4.7, emoji:'🍊' },
+    { id:'a1', name:'Temple Tour', city:'Bali', country:'Indonesia', category:'culture', price:25, duration:'4h', rating:4.6, emoji:'🛕' },
+    { id:'a2', name:'Surf Lesson', city:'Bali', country:'Indonesia', category:'adventure', price:30, duration:'2h', rating:4.8, emoji:'🏄' },
+    { id:'a3', name:'Rice Terrace Trek', city:'Bali', country:'Indonesia', category:'nature', price:15, duration:'3h', rating:4.7, emoji:'🌾' },
+    { id:'a4', name:'Street Food Tour', city:'Bangkok', country:'Thailand', category:'food', price:18, duration:'3h', rating:4.7, emoji:'🍜' },
+    { id:'a5', name:'Temple & Canal Tour', city:'Bangkok', country:'Thailand', category:'culture', price:22, duration:'5h', rating:4.5, emoji:'🛶' },
+    { id:'a6', name:'Muay Thai Class', city:'Bangkok', country:'Thailand', category:'adventure', price:20, duration:'1.5h', rating:4.6, emoji:'🥊' },
+    { id:'a7', name:'Louvre Skip-the-Line', city:'Paris', country:'France', category:'culture', price:22, duration:'3h', rating:4.9, emoji:'🎨' },
+    { id:'a8', name:'Seine River Cruise', city:'Paris', country:'France', category:'sightseeing', price:15, duration:'1.5h', rating:4.6, emoji:'🚢' },
+    { id:'a9', name:'Montmartre Walking Tour', city:'Paris', country:'France', category:'culture', price:0, duration:'2h', rating:4.5, emoji:'🎭' },
+    { id:'a10', name:'Shinto Shrine Tour', city:'Tokyo', country:'Japan', category:'culture', price:0, duration:'3h', rating:4.7, emoji:'⛩️' },
+    { id:'a11', name:'Tsukiji Food Walk', city:'Tokyo', country:'Japan', category:'food', price:45, duration:'3h', rating:4.8, emoji:'🍣' },
+    { id:'a12', name:'Basilica & Grand Bazaar', city:'Istanbul', country:'Turkey', category:'culture', price:0, duration:'4h', rating:4.6, emoji:'🕌' },
+    { id:'a13', name:'Bosphorus Cruise', city:'Istanbul', country:'Turkey', category:'sightseeing', price:12, duration:'2h', rating:4.5, emoji:'🚤' },
+    { id:'a14', name:'Sagrada Familia Entry', city:'Barcelona', country:'Spain', category:'culture', price:26, duration:'1.5h', rating:4.9, emoji:'⛪' },
+    { id:'a15', name:'Gothic Quarter Tour', city:'Barcelona', country:'Spain', category:'culture', price:0, duration:'2h', rating:4.4, emoji:'🏛️' },
+    { id:'a16', name:'La Boqueria Food Tour', city:'Barcelona', country:'Spain', category:'food', price:35, duration:'3h', rating:4.7, emoji:'🍊' },
   ],
   transport: [
     { id:'t1', type:'flight', from:'Sydney', to:'Bali', price:650, duration:'6h', airline:'Qantas', emoji:'✈️' },
@@ -144,10 +145,14 @@ const DB = {
   ]
 };
 
+// Safe city check: match city OR country
+function matchesCity(item, c) {
+  return (item.city || '').toLowerCase() === c || (item.country || '').toLowerCase() === c;
+}
+
 // --- STATE ---
 let currentDestination = '';
 let currentNights = 7;
-let selectedItems = { transport: null, hotel: null, activities: [] };
 
 function quickSearch(city) {
   document.getElementById('search').value = city;
@@ -160,11 +165,12 @@ function search() {
   currentDestination = city;
   currentNights = parseInt(document.getElementById('nights').value);
   
-  // Find matches (case-insensitive)
   const c = city.toLowerCase();
-  const hotels = DB.hotels.filter(h => h.city.toLowerCase() === c || h.country.toLowerCase() === c).sort((a,b) => a.price - b.price);
-  const activities = DB.activities.filter(a => a.city.toLowerCase() === c || a.country.toLowerCase() === c).sort((a,b) => a.price - b.price);
-  const transport = DB.transport.filter(t => t.to.toLowerCase() === c).sort((a,b) => a.price - b.price);
+  
+  // Find matches
+  const hotels = DB.hotels.filter(h => matchesCity(h, c)).sort((a,b) => a.price - b.price);
+  const activities = DB.activities.filter(a => matchesCity(a, c)).sort((a,b) => a.price - b.price);
+  const transport = DB.transport.filter(t => (t.to || '').toLowerCase() === c).sort((a,b) => a.price - b.price);
   
   const hotelCost = hotels[0] ? hotels[0].price * currentNights : 0;
   const activityCost = activities.reduce((s, a) => s + a.price, 0);
@@ -189,7 +195,7 @@ function renderResults(hotels, activities, transport, total, transportCost, hote
   let html = `
     <div class="mb-6 p-4 bg-emerald-50 border border-emerald-200 rounded-xl">
       <p class="font-semibold text-emerald-800">💰 Cheapest combo: $${total.toLocaleString()}</p>
-      <p class="text-sm text-emerald-600 mt-1">Flight $${transportCost} · Hotel (${currentNights} nights) $${hotelCost} · Activities $${activityCost}</p>
+      <p class="text-sm text-emerald-600 mt-1">Transport $${transportCost} · Hotel (${currentNights} nights) $${hotelCost} · Activities $${activityCost}</p>
     </div>
     
     <div class="grid lg:grid-cols-3 gap-6">
@@ -198,15 +204,15 @@ function renderResults(hotels, activities, transport, total, transportCost, hote
   // Transport
   html += `<div><h3 class="font-semibold text-gray-700 mb-3 flex items-center gap-2">✈️ Transport to ${currentDestination}</h3>`;
   if (transport.length === 0) {
-    html += `<p class="text-gray-400 text-sm py-4">No transport data for this route. Try searching from another city.</p>`;
+    html += `<p class="text-gray-400 text-sm py-4">No transport data for this route. Try searching from a major city.</p>`;
   } else {
     transport.forEach(t => {
       html += `
-        <div class="bg-white rounded-xl border border-gray-200 p-4 mb-3 card-hover ${selectedItems.transport?.id === t.id ? 'border-primary-400 ring-2 ring-primary-200' : ''}">
+        <div class="bg-white rounded-xl border border-gray-200 p-4 mb-3 card-hover">
           <div class="flex justify-between items-start">
             <div>
-              <p class="font-medium">${t.airline}</p>
-              <p class="text-sm text-gray-500">${t.type.toUpperCase()} · ${t.duration}</p>
+              <p class="font-medium">${t.emoji || '✈️'} ${t.airline || t.type}</p>
+              <p class="text-sm text-gray-500">${t.from || ''} → ${t.to || ''} · ${t.duration}</p>
             </div>
             <span class="text-lg font-bold text-primary-600">$${t.price}</span>
           </div>
@@ -218,14 +224,14 @@ function renderResults(hotels, activities, transport, total, transportCost, hote
   // Hotels
   html += `<div><h3 class="font-semibold text-gray-700 mb-3 flex items-center gap-2">🏨 Hotels</h3>`;
   if (hotels.length === 0) {
-    html += `<p class="text-gray-400 text-sm py-4">No hotels found for ${currentDestination}. Try a different destination.</p>`;
+    html += `<p class="text-gray-400 text-sm py-4">No hotels found for ${currentDestination}.</p>`;
   } else {
     hotels.forEach(h => {
       html += `
-        <div class="bg-white rounded-xl border border-gray-200 p-4 mb-3 card-hover ${selectedItems.hotel?.id === h.id ? 'border-primary-400 ring-2 ring-primary-200' : ''}">
+        <div class="bg-white rounded-xl border border-gray-200 p-4 mb-3 card-hover">
           <div class="flex justify-between items-start mb-2">
             <div>
-              <p class="font-medium">${h.emoji} ${h.name}</p>
+              <p class="font-medium">${h.emoji || '🏨'} ${h.name}</p>
               <p class="text-sm text-gray-500">${h.city}, ${h.country}</p>
             </div>
             <div class="text-right">
@@ -255,8 +261,8 @@ function renderResults(hotels, activities, transport, total, transportCost, hote
         <div class="bg-white rounded-xl border border-gray-200 p-4 mb-3 card-hover">
           <div class="flex justify-between items-start">
             <div>
-              <p class="font-medium">${a.emoji} ${a.name}</p>
-              <p class="text-sm text-gray-500 capitalize">${a.category} · ${a.duration}</p>
+              <p class="font-medium">${a.emoji || '🎯'} ${a.name}</p>
+              <p class="text-sm text-gray-500 capitalize">${a.category || ''} · ${a.duration || ''}</p>
             </div>
             <span class="font-bold ${free ? 'text-emerald-600' : 'text-primary-600'}">${free ? 'FREE' : '$' + a.price}</span>
           </div>
